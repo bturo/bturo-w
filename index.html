@@ -1,155 +1,1622 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>فروش ولت — Just Wallet</title>
-  <style>
-    :root{
-      --tether-green: #26A17B;
-      --tether-dark: #1f7b60;
-      --muted: #6b6b6b;
-      --bg: #f6fdf9;
-      --card: #ffffff;
-      --accent: #e8f6f1;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: "Vazir", Tahoma, Arial, sans-serif;
-      background: linear-gradient(180deg,var(--bg),#eef9f4 60%);
-      color:#0b2b24;
-      padding:24px;
-    }
-    .container{
-      max-width:1100px;
-      margin:0 auto;
-    }
-    header{
-      display:flex;align-items:center;gap:16px;margin-bottom:20px;
-    }
-    .logo{
-      width:72px;height:72px;border-radius:14px;
-      background:linear-gradient(135deg,var(--tether-green),var(--tether-dark));
-      display:flex;align-items:center;justify-content:center;
-      color:white;font-weight:700;font-size:18px;
-      box-shadow:0 6px 18px rgba(6,90,70,0.12);
-    }
-    h1{margin:0;font-size:22px}
-    p.lead{margin:6px 0 0;color:var(--muted)}
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:20px;margin-top:18px;
-    }
-    .card{
-      background:var(--card);
-      padding:18px;border-radius:12px;
-      box-shadow:0 8px 30px rgba(12,60,50,0.06);
-    }
-    table{
-      width:100%;border-collapse:collapse;margin-top:8px;font-size:14px;
-    }
-    th,td{
-      text-align:right;padding:12px 10px;border-bottom:1px solid #eef6f2;
-    }
-    th{
-      font-weight:700;color:var(--tether-dark);
-      background:linear-gradient(90deg, rgba(38,161,123,0.06), transparent)
-    }
-    .amount{font-weight:700}
-    .discount{color:var(--tether-dark);font-weight:700}
-    .buy-btn{
-      display:inline-block;padding:8px 10px;border-radius:10px;
-      background:var(--tether-green);color:white;text-decoration:none;
-      font-weight:700;font-size:12px;
-    }
-    .note{font-size:13px;color:var(--muted);margin-top:8px}
-    @media (max-width:900px){
-      .grid{grid-template-columns:1fr}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت ولت | Wallet Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary-color: #ffffff;
+            --accent-color: #81c784;
+            --text-color: #333333;
+            --light-gray: #f5f5f5;
+            --border-radius: 12px;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 20px 0;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 28px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .site-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .site-title p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .admin-indicator {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Navigation Styles */
+        .main-nav {
+            display: flex;
+            gap: 5px;
+            margin-top: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 5px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: calc(var(--border-radius) - 5px);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .nav-btn.active {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .nav-btn:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Sections */
+        .section {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 22px;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: var(--transition);
+            border: 1px solid rgba(46, 125, 50, 0.1);
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        /* Calculator Styles */
+        .calculator {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .result-box {
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border-right: 5px solid var(--primary-color);
+        }
+
+        .result-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .result-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.5;
+            padding: 10px;
+            background-color: rgba(129, 199, 132, 0.1);
+            border-radius: 8px;
+        }
+
+        .discount-badge {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* Price Packages */
+        .price-packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .price-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            text-align: center;
+            border-top: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .price-card h4 {
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .wallet-amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 15px 0;
+        }
+
+        .price-amount {
+            font-size: 32px;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn i {
+            margin-left: 8px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .admin-login {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .admin-login input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        .admin-controls {
+            margin-top: 30px;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .control-group h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .control-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .control-btn.danger {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .control-btn.danger:hover {
+            background-color: #c82333;
+        }
+
+        .control-btn.success {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .control-btn.success:hover {
+            background-color: #218838;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: flex-end;
+        }
+
+        /* Stats Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .admin-indicator {
+                align-self: center;
+            }
+            
+            .price-packages {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
     <header>
-      <div class="logo">JW</div>
-      <div>
-        <h1>فروش و بازیابی انواع ولت</h1>
-        <p class="lead">زیر نظر شرکت بزرگ و معتبر BTC TURK</p>
-      </div>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="site-title">
+                        <h1>مدیریت ولت</h1>
+                        <p>خرید و بازیابی ولت های دیجیتال</p>
+                    </div>
+                </div>
+                <div class="admin-indicator">
+                    <i class="fas fa-user-shield"></i>
+                    <span>بخش مدیریت سایت</span>
+                </div>
+            </div>
+            
+            <div class="main-nav">
+                <button class="nav-btn active" data-section="wallet-recovery">
+                    <i class="fas fa-key"></i> بازیابی ولت
+                </button>
+                <button class="nav-btn" data-section="wallet-purchase">
+                    <i class="fas fa-shopping-cart"></i> خرید ولت
+                </button>
+                <button class="nav-btn" data-section="admin-login">
+                    <i class="fas fa-cogs"></i> مدیریت سایت
+                </button>
+            </div>
+        </div>
     </header>
 
-    <div class="grid">
-      <main>
-        <section class="card">
-          <h2>قیمت ولت‌ها</h2>
-          <p class="note">قیمت نهایی برابر است با ۱۰٪ موجودی ولت.</p>
-
-          <table>
-            <thead>
-              <tr>
-                <th>موجودی ولت (USD)</th>
-                <th>قیمت ولت(تتر)</th>
-                <th>خرید</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <!-- ولت ۱۰۰۰ تا ۵۰۰۰۰۰ دلار با قیمت ۱۰٪ -->
-              <!-- در صورت نیاز می‌توانم جدول را تا ۵۰۰ هزار دلار کامل کنم -->
-
-              <tr>
-                <td class="amount">1,000دلار</td>
-                <td class="discount">110 $</td>
-                <td><a class="buy-btn" target="_blank" href="https://instagram.com/hack_wallets ">خرید از اینستاگرام</a></td>
-              </tr>
-
-              <tr>
-                <td class="amount">3,000دلار</td>
-                <td class="discount">310 $</td>
-                <td><a class="buy-btn" target="_blank" href="https://instagram.com/hack_wallets ">خرید از اینستاگرام</a></td>
-              </tr>
-
-              <tr>
-                <td class="amount">5,000دلار</td>
-                <td class="discount">500 $</td>
-                <td><a class="buy-btn" target="_blank" href="https://instagram.com/hack_wallets ">خرید از اینستاگرام</a></td>
-              </tr>
-
-              <tr>
-                <td class="amount">1,000دلار</td>
-                <td class="discount">890 $</td>
-                <td><a class="buy-btn" target="_blank" href="https://instagram.com/hack_wallets ">خرید از اینستاگرام</a></td>
-              </tr>
-
-            </tbody>
-          </table>
-
-          <p class="note">
-            ولت‌ها تا سقف ۵۰۰,۰۰۰ دلار نیز موجود است. جهت استعلام قیمت دقیق، لطفاً از طریق اینستاگرام پیام دهید.
-          </p>
+    <div class="container">
+        <!-- Wallet Recovery Section -->
+        <section id="wallet-recovery" class="section active">
+            <h2 class="section-title">
+                <i class="fas fa-key"></i> بازیابی ولت گم شده
+            </h2>
+            
+            <div class="card">
+                <h3>ماشین حساب محاسبه هزینه بازیابی</h3>
+                <p id="recovery-description">مقدار موجودی ولت گمشده خود را وارد کنید تا هزینه بازیابی محاسبه شود.</p>
+                
+                <div class="calculator">
+                    <div class="input-group">
+                        <label for="lost-amount">مقدار موجودی ولت گمشده (دلار)</label>
+                        <input type="number" id="lost-amount" min="1000" step="100" placeholder="مثال: 2000">
+                        <small class="note">حداقل موجودی قابل بازیابی: <span id="min-recovery">1000</span> دلار</small>
+                    </div>
+                    
+                    <button class="btn" id="calculate-recovery">
+                        <i class="fas fa-calculator"></i> محاسبه هزینه بازیابی
+                    </button>
+                    
+                    <div class="result-box" id="recovery-result" style="display: none;">
+                        <h4>هزینه بازیابی ولت</h4>
+                        <div class="result-amount" id="recovery-cost">0</div>
+                        <p>دلار</p>
+                        
+                        <div id="recovery-discount" style="display: none;">
+                            <div class="discount-badge">تخفیف اعمال شده: <span id="recovery-discount-percent">5</span>%</div>
+                        </div>
+                        
+                        <div class="note" id="recovery-note">
+                            <i class="fas fa-info-circle"></i> نصف هزینه بعد از تحویل ولت از شما دریافت می‌شود.
+                            <br>ابتدا 50% هزینه واریز می‌شود، 50% باقیمانده پس از تحویل ولت دریافت می‌گردد.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>نکات مهم بازیابی ولت</h3>
+                <ul id="recovery-tips" style="padding-right: 20px; margin-top: 15px;">
+                    <li style="margin-bottom: 10px;">حداقل موجودی قابل بازیابی 1000 دلار می‌باشد.</li>
+                    <li style="margin-bottom: 10px;">برای موجودی‌های بالای 4000 دلار، 5% تخفیف اعمال می‌شود.</li>
+                    <li style="margin-bottom: 10px;">زمان تقریبی بازیابی: 3 تا 7 روز کاری</li>
+                    <li style="margin-bottom: 10px;">پشتیبانی 6 ماهه پس از بازیابی شامل سرویس می‌شود.</li>
+                    <li>در صورت عدم موفقیت در بازیابی، هزینه واریزی کامل بازگردانده می‌شود.</li>
+                </ul>
+            </div>
         </section>
-
-        <!-- FAQ جدید -->
-        <section class="card" style="margin-top:16px">
-          <h3>سوالات متداول</h3>
-          <ul style="margin:8px 0 0;padding-right:14px;color:var(--muted);line-height:1.8">
-            <li><strong>قیمت‌ها به چه ارزی هستند؟</strong> همه قیمت ها به نرخ تتر می‌باشد.</li>
-            <li><strong>پرداخت چگونه است؟</strong> پرداخت به صورت ارز دیجیتال تتر و یا ترون انجام می‌شود.</li>
-            <li><strong>آیا ضمانت یا پشتیبانی وجود دارد؟</strong> تا زمان نقد کردن ولت، از تیم ما پشتیبانی دریافت خواهید کرد و در صورت وجود هرگونه مشکل، ولت جدید تحویل داده می‌شود.</li>
-          </ul>
+        
+        <!-- Wallet Purchase Section -->
+        <section id="wallet-purchase" class="section">
+            <h2 class="section-title">
+                <i class="fas fa-shopping-cart"></i> خرید ولت جدید
+            </h2>
+            
+            <div class="card">
+                <h3>بسته‌های قیمتی ولت</h3>
+                <p id="purchase-description">ولت‌های با موجودی مختلف را می‌توانید از این بخش خریداری نمایید.</p>
+                
+                <div class="price-packages" id="price-packages-container">
+                    <!-- Price packages will be loaded dynamically -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>ماشین حساب خرید ولت</h3>
+                <p>مقدار موجودی دلخواه خود را وارد کنید تا قیمت ولت محاسبه شود.</p>
+                
+                <div class="calculator">
+                    <div class="input-group">
+                        <label for="purchase-amount">مقدار موجودی ولت مورد نظر (دلار)</label>
+                        <input type="number" id="purchase-amount" min="1000" step="100" placeholder="حداقل 1000 دلار">
+                        <small class="note">قیمت ولت <span id="price-percent">10</span>% موجودی ولت می‌باشد. حداقل خرید: <span id="min-purchase">1000</span> دلار</small>
+                    </div>
+                    
+                    <button class="btn" id="calculate-purchase">
+                        <i class="fas fa-calculator"></i> محاسبه قیمت ولت
+                    </button>
+                    
+                    <div class="result-box" id="purchase-result" style="display: none;">
+                        <h4>قیمت نهایی ولت</h4>
+                        <div class="result-amount" id="purchase-cost">0</div>
+                        <p>دلار</p>
+                        
+                        <div id="purchase-discount" style="display: none;">
+                            <div class="discount-badge" id="discount-text">تخفیف اعمال شده</div>
+                        </div>
+                        
+                        <div class="note" id="purchase-note">
+                            <i class="fas fa-info-circle"></i> ولت‌های با موجودی بالای 3000 دلار شامل 7% تخفیف و بالای 7000 دلار شامل 10% تخفیف می‌شوند.
+                        </div>
+                        
+                        <button class="btn" id="direct-purchase" style="margin-top: 20px;">
+                            <i class="fab fa-instagram"></i> خرید ولت / مراجعه به اینستاگرام
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
-      </main>
-
-      <aside>
-        <div class="card">
-          <h3>خرید از اینستاگرام</h3>
-          <p class="note">برای خرید یا استعلام موجودی روی لینک زیر بزنید:</p>
-          <a class="buy-btn" href="https://instagram.com/hack_wallets " target="_blank">ورود به اینستاگرام</a>
-        </div>
-      </aside>
+        
+        <!-- Admin Login Section -->
+        <section id="admin-login" class="section">
+            <h2 class="section-title">
+                <i class="fas fa-user-shield"></i> ورود به بخش مدیریت سایت
+            </h2>
+            
+            <div class="card admin-login">
+                <h3>ورود مدیر سایت</h3>
+                <p>این بخش مخصوص مدیر سایت است. لطفا رمز مدیریت را وارد کنید.</p>
+                
+                <div class="input-group">
+                    <label for="admin-password">رمز مدیریت</label>
+                    <input type="password" id="admin-password" placeholder="رمز مدیریت را وارد کنید">
+                </div>
+                
+                <button class="btn" id="login-admin">
+                    <i class="fas fa-sign-in-alt"></i> ورود به پنل مدیریت
+                </button>
+                
+                <div class="note" style="margin-top: 20px;">
+                    <i class="fas fa-exclamation-triangle"></i> توجه: این بخش فقط برای مدیر سایت قابل دسترسی می‌باشد.
+                </div>
+            </div>
+            
+            <!-- Admin Panel (hidden by default) -->
+            <div class="admin-panel" id="admin-panel">
+                <h3 class="section-title">
+                    <i class="fas fa-cogs"></i> پنل مدیریت سایت
+                </h3>
+                
+                <div class="control-group">
+                    <h4><i class="fas fa-power-off"></i> کنترل وضعیت سایت</h4>
+                    <p>از این بخش می‌توانید سایت را از دسترس خارج یا مجدداً فعال کنید.</p>
+                    <div class="control-buttons">
+                        <button class="control-btn danger" id="disable-site">
+                            <i class="fas fa-ban"></i> غیرفعال کردن سایت
+                        </button>
+                        <button class="control-btn success" id="enable-site">
+                            <i class="fas fa-check"></i> فعال کردن سایت
+                        </button>
+                    </div>
+                    <div id="site-status" class="note" style="margin-top: 10px; background-color: rgba(76, 175, 80, 0.1);">
+                        <i class="fas fa-circle" style="color: #4CAF50;"></i> سایت در حال حاضر فعال است.
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h4><i class="fas fa-edit"></i> ویرایش قیمت‌ها و توضیحات</h4>
+                    <p>ویرایش اطلاعات نمایش داده شده در سایت.</p>
+                    <div class="control-buttons">
+                        <button class="control-btn" id="edit-prices">
+                            <i class="fas fa-dollar-sign"></i> ویرایش قیمت‌ها
+                        </button>
+                        <button class="control-btn" id="edit-descriptions">
+                            <i class="fas fa-file-alt"></i> ویرایش توضیحات
+                        </button>
+                        <button class="control-btn" id="edit-discounts">
+                            <i class="fas fa-percentage"></i> ویرایش تخفیف‌ها
+                        </button>
+                        <button class="control-btn" id="edit-packages">
+                            <i class="fas fa-box"></i> ویرایش پکیج‌ها
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h4><i class="fas fa-chart-bar"></i> آمار و گزارشات</h4>
+                    <p>مشاهده آمار بازدید و فعالیت‌های سایت.</p>
+                    <div class="control-buttons">
+                        <button class="control-btn" id="view-stats">
+                            <i class="fas fa-eye"></i> مشاهده آمار بازدید
+                        </button>
+                        <button class="control-btn" id="reset-stats">
+                            <i class="fas fa-redo"></i> بازنشانی آمار
+                        </button>
+                        <button class="control-btn" id="export-stats">
+                            <i class="fas fa-download"></i> خروجی آمار
+                        </button>
+                    </div>
+                    <div class="note">
+                        <i class="fas fa-info-circle"></i> آمار بازدید فعلی: <span id="visit-count">125</span> بازدید
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h4><i class="fas fa-shield-alt"></i> امنیت و تنظیمات</h4>
+                    <p>تنظیمات امنیتی و مدیریت دسترسی.</p>
+                    <div class="control-buttons">
+                        <button class="control-btn" id="change-password">
+                            <i class="fas fa-key"></i> تغییر رمز مدیریت
+                        </button>
+                        <button class="control-btn" id="backup-data">
+                            <i class="fas fa-database"></i> پشتیبان‌گیری اطلاعات
+                        </button>
+                        <button class="control-btn" id="restore-data">
+                            <i class="fas fa-undo"></i> بازیابی اطلاعات
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h4><i class="fas fa-calculator"></i> تنظیمات ماشین حساب</h4>
+                    <p>تنظیمات مربوط به ماشین حساب‌های خرید و بازیابی.</p>
+                    <div class="control-buttons">
+                        <button class="control-btn" id="edit-calculator">
+                            <i class="fas fa-calculator"></i> ویرایش محاسبات
+                        </button>
+                        <button class="control-btn" id="edit-notes">
+                            <i class="fas fa-sticky-note"></i> ویرایش پیام‌ها
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-  </div>
+
+    <!-- Modals -->
+    <div id="editPricesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">ویرایش قیمت‌ها</h3>
+                <button class="close-modal" data-modal="editPricesModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>درصد قیمت نسبت به موجودی (خرید)</label>
+                    <input type="number" id="edit-price-percent" min="1" max="100" step="0.5">
+                </div>
+                <div class="input-group">
+                    <label>درصد هزینه بازیابی</label>
+                    <input type="number" id="edit-recovery-percent" min="1" max="100" step="0.5">
+                </div>
+                <div class="input-group">
+                    <label>حداقل موجودی خرید (دلار)</label>
+                    <input type="number" id="edit-min-purchase" min="100" step="100">
+                </div>
+                <div class="input-group">
+                    <label>حداقل موجودی بازیابی (دلار)</label>
+                    <input type="number" id="edit-min-recovery" min="100" step="100">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" data-modal="editPricesModal">لغو</button>
+                <button class="btn" id="save-prices">ذخیره تغییرات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editDescriptionsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">ویرایش توضیحات</h3>
+                <button class="close-modal" data-modal="editDescriptionsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>توضیحات بخش بازیابی</label>
+                    <textarea id="edit-recovery-desc" rows="4"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>توضیحات بخش خرید</label>
+                    <textarea id="edit-purchase-desc" rows="4"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>نکات بازیابی</label>
+                    <textarea id="edit-recovery-tips" rows="6"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>پیام بازیابی</label>
+                    <textarea id="edit-recovery-note" rows="3"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>پیام خرید</label>
+                    <textarea id="edit-purchase-note" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" data-modal="editDescriptionsModal">لغو</button>
+                <button class="btn" id="save-descriptions">ذخیره تغییرات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editDiscountsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">ویرایش تخفیف‌ها</h3>
+                <button class="close-modal" data-modal="editDiscountsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>حداقل موجودی برای تخفیف 7% (دلار)</label>
+                    <input type="number" id="edit-discount-7" min="1000" step="100">
+                </div>
+                <div class="input-group">
+                    <label>حداقل موجودی برای تخفیف 10% (دلار)</label>
+                    <input type="number" id="edit-discount-10" min="1000" step="100">
+                </div>
+                <div class="input-group">
+                    <label>حداقل موجودی برای تخفیف بازیابی (دلار)</label>
+                    <input type="number" id="edit-recovery-discount" min="1000" step="100">
+                </div>
+                <div class="input-group">
+                    <label>درصد تخفیف بازیابی</label>
+                    <input type="number" id="edit-recovery-discount-percent" min="1" max="100" step="0.5">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" data-modal="editDiscountsModal">لغو</button>
+                <button class="btn" id="save-discounts">ذخیره تغییرات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editPackagesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">ویرایش پکیج‌های قیمتی</h3>
+                <button class="close-modal" data-modal="editPackagesModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="packages-container">
+                    <!-- Packages will be loaded here -->
+                </div>
+                <button class="btn btn-secondary" id="add-package" style="margin-top: 15px; width: auto;">
+                    <i class="fas fa-plus"></i> افزودن پکیج جدید
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" data-modal="editPackagesModal">لغو</button>
+                <button class="btn" id="save-packages">ذخیره تغییرات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="statsModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">آمار و گزارشات سایت</h3>
+                <button class="close-modal" data-modal="statsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-visits">0</div>
+                        <div class="stat-label">کل بازدیدها</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="today-visits">0</div>
+                        <div class="stat-label">بازدید امروز</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="recovery-calculations">0</div>
+                        <div class="stat-label">محاسبات بازیابی</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="purchase-calculations">0</div>
+                        <div class="stat-label">محاسبات خرید</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="package-clicks">0</div>
+                        <div class="stat-label">کلیک روی پکیج‌ها</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="instagram-clicks">0</div>
+                        <div class="stat-label">کلیک اینستاگرام</div>
+                    </div>
+                </div>
+                <div class="note" style="margin-top: 20px;">
+                    <h4>جزئیات بازدیدها:</h4>
+                    <div id="visits-details" style="max-height: 200px; overflow-y: auto; margin-top: 10px;">
+                        <!-- Visits details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" data-modal="statsModal">بستن</button>
+                <button class="btn" id="export-stats-btn">خروجی اکسل</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container">
+        <p>© 2023 مدیریت ولت. تمامی حقوق محفوظ است.</p>
+        <p>پشتیبانی: <a href="https://instagram.com/hack_wallets" target="_blank" style="color: var(--primary-color); text-decoration: none;">@hack_wallets</a> در اینستاگرام</p>
+    </footer>
+
+    <script>
+        // Global variables and data storage
+        let siteData = {
+            siteActive: true,
+            adminPassword: "34rtyu78909876ggh",
+            settings: {
+                pricePercent: 10,
+                recoveryPercent: 5,
+                minPurchase: 1000,
+                minRecovery: 1000,
+                discountThreshold7: 3000,
+                discountThreshold10: 7000,
+                recoveryDiscountThreshold: 4000,
+                recoveryDiscountPercent: 5
+            },
+            descriptions: {
+                recovery: "مقدار موجودی ولت گمشده خود را وارد کنید تا هزینه بازیابی محاسبه شود.",
+                purchase: "ولت‌های با موجودی مختلف را می‌توانید از این بخش خریداری نمایید.",
+                recoveryTips: [
+                    "حداقل موجودی قابل بازیابی 1000 دلار می‌باشد.",
+                    "برای موجودی‌های بالای 4000 دلار، 5% تخفیف اعمال می‌شود.",
+                    "زمان تقریبی بازیابی: 3 تا 7 روز کاری",
+                    "پشتیبانی 6 ماهه پس از بازیابی شامل سرویس می‌شود.",
+                    "در صورت عدم موفقیت در بازیابی، هزینه واریزی کامل بازگردانده می‌شود."
+                ],
+                recoveryNote: "نصف هزینه بعد از تحویل ولت از شما دریافت می‌شود.\nابتدا 50% هزینه واریز می‌شود، 50% باقیمانده پس از تحویل ولت دریافت می‌گردد.",
+                purchaseNote: "ولت‌های با موجودی بالای 3000 دلار شامل 7% تخفیف و بالای 7000 دلار شامل 10% تخفیف می‌شوند."
+            },
+            pricePackages: [
+                { name: "پکیج نقره‌ای", amount: 1000, price: 100 },
+                { name: "پکیج طلایی", amount: 2000, price: 200 },
+                { name: "پکیج پلاتینیومی", amount: 3000, price: 270 }
+            ],
+            statistics: {
+                totalVisits: 0,
+                todayVisits: 0,
+                recoveryCalculations: 0,
+                purchaseCalculations: 0,
+                packageClicks: 0,
+                instagramClicks: 0,
+                visitDetails: []
+            }
+        };
+
+        // Initialize from localStorage
+        function initFromStorage() {
+            const savedData = localStorage.getItem('walletSiteData');
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                siteData = { ...siteData, ...parsed };
+            }
+            
+            // Update today's visits
+            const today = new Date().toDateString();
+            const lastVisitDate = localStorage.getItem('lastVisitDate');
+            
+            if (lastVisitDate !== today) {
+                siteData.statistics.todayVisits = 0;
+                localStorage.setItem('lastVisitDate', today);
+            }
+            
+            // Increment visits
+            siteData.statistics.totalVisits++;
+            siteData.statistics.todayVisits++;
+            
+            // Add visit detail
+            siteData.statistics.visitDetails.push({
+                date: new Date().toLocaleString('fa-IR'),
+                page: 'home',
+                ip: 'unknown'
+            });
+            
+            // Keep only last 100 visits
+            if (siteData.statistics.visitDetails.length > 100) {
+                siteData.statistics.visitDetails = siteData.statistics.visitDetails.slice(-100);
+            }
+            
+            saveToStorage();
+            updateUIFromData();
+        }
+
+        // Save to localStorage
+        function saveToStorage() {
+            localStorage.setItem('walletSiteData', JSON.stringify(siteData));
+        }
+
+        // Update UI from data
+        function updateUIFromData() {
+            // Update settings
+            document.getElementById('price-percent').textContent = siteData.settings.pricePercent;
+            document.getElementById('min-purchase').textContent = siteData.settings.minPurchase;
+            document.getElementById('min-recovery').textContent = siteData.settings.minRecovery;
+            document.getElementById('recovery-discount-percent').textContent = siteData.settings.recoveryDiscountPercent;
+            
+            // Update descriptions
+            document.getElementById('recovery-description').textContent = siteData.descriptions.recovery;
+            document.getElementById('purchase-description').textContent = siteData.descriptions.purchase;
+            document.getElementById('recovery-note').innerHTML = `<i class="fas fa-info-circle"></i> ${siteData.descriptions.recoveryNote.replace(/\n/g, '<br>')}`;
+            document.getElementById('purchase-note').innerHTML = `<i class="fas fa-info-circle"></i> ${siteData.descriptions.purchaseNote}`;
+            
+            // Update recovery tips
+            const tipsList = document.getElementById('recovery-tips');
+            tipsList.innerHTML = '';
+            siteData.descriptions.recoveryTips.forEach(tip => {
+                const li = document.createElement('li');
+                li.style.marginBottom = '10px';
+                li.textContent = tip;
+                tipsList.appendChild(li);
+            });
+            
+            // Update price packages
+            renderPricePackages();
+            
+            // Update statistics
+            document.getElementById('visit-count').textContent = siteData.statistics.totalVisits;
+        }
+
+        // Render price packages
+        function renderPricePackages() {
+            const container = document.getElementById('price-packages-container');
+            container.innerHTML = '';
+            
+            siteData.pricePackages.forEach((pkg, index) => {
+                const discount = pkg.price < (pkg.amount * siteData.settings.pricePercent / 100);
+                const discountPercent = discount ? Math.round((1 - (pkg.price / (pkg.amount * siteData.settings.pricePercent / 100))) * 100) : 0;
+                
+                const card = document.createElement('div');
+                card.className = 'price-card';
+                card.innerHTML = `
+                    <h4>${pkg.name}</h4>
+                    <div class="wallet-amount">${pkg.amount.toLocaleString()} دلار</div>
+                    <p>موجودی ولت</p>
+                    <div class="price-amount">${pkg.price.toLocaleString()} دلار</div>
+                    <p>قیمت ولت${discount ? ` (با تخفیف ${discountPercent}%)` : ''}</p>
+                    ${discount ? `<div class="discount-badge">تخفیف ویژه: ${discountPercent}%</div>` : ''}
+                    <button class="btn purchase-btn" data-index="${index}" style="margin-top: 15px;">
+                        <i class="fas fa-cart-plus"></i> انتخاب این پکیج
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Navigation between sections
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Track navigation
+                siteData.statistics.visitDetails.push({
+                    date: new Date().toLocaleString('fa-IR'),
+                    page: sectionId,
+                    ip: 'unknown'
+                });
+                saveToStorage();
+            });
+        });
+
+        // Wallet Recovery Calculator
+        document.getElementById('calculate-recovery').addEventListener('click', function() {
+            const lostAmount = parseInt(document.getElementById('lost-amount').value);
+            const resultDiv = document.getElementById('recovery-result');
+            const discountDiv = document.getElementById('recovery-discount');
+            const costElement = document.getElementById('recovery-cost');
+            
+            if (!lostAmount || lostAmount < siteData.settings.minRecovery) {
+                alert(`لطفاً مقدار معتبری وارد کنید (حداقل ${siteData.settings.minRecovery.toLocaleString()} دلار)`);
+                return;
+            }
+            
+            // Calculate base cost
+            let baseCost = lostAmount * (siteData.settings.recoveryPercent / 100);
+            let discount = 0;
+            
+            // Apply discount for amounts over threshold
+            if (lostAmount > siteData.settings.recoveryDiscountThreshold) {
+                discount = baseCost * (siteData.settings.recoveryDiscountPercent / 100);
+                discountDiv.style.display = 'block';
+                document.getElementById('recovery-discount-percent').textContent = siteData.settings.recoveryDiscountPercent;
+            } else {
+                discountDiv.style.display = 'none';
+            }
+            
+            const finalCost = baseCost - discount;
+            
+            // Display result
+            costElement.textContent = finalCost.toFixed(0).toLocaleString();
+            resultDiv.style.display = 'block';
+            
+            // Update statistics
+            siteData.statistics.recoveryCalculations++;
+            siteData.statistics.visitDetails.push({
+                date: new Date().toLocaleString('fa-IR'),
+                action: 'recovery_calculation',
+                amount: lostAmount,
+                cost: finalCost
+            });
+            saveToStorage();
+        });
+
+        // Wallet Purchase Calculator
+        document.getElementById('calculate-purchase').addEventListener('click', function() {
+            const purchaseAmount = parseInt(document.getElementById('purchase-amount').value);
+            const resultDiv = document.getElementById('purchase-result');
+            const discountDiv = document.getElementById('purchase-discount');
+            const costElement = document.getElementById('purchase-cost');
+            const discountText = document.getElementById('discount-text');
+            
+            if (!purchaseAmount || purchaseAmount < siteData.settings.minPurchase) {
+                alert(`لطفاً مقدار معتبری وارد کنید (حداقل ${siteData.settings.minPurchase.toLocaleString()} دلار)`);
+                return;
+            }
+            
+            // Calculate base cost
+            let baseCost = purchaseAmount * (siteData.settings.pricePercent / 100);
+            let discount = 0;
+            let discountPercent = 0;
+            
+            // Apply discount for amounts over thresholds
+            if (purchaseAmount > siteData.settings.discountThreshold10) {
+                discountPercent = 10;
+                discount = baseCost * 0.10;
+                discountText.textContent = `تخفیف اعمال شده: ${discountPercent}%`;
+            } else if (purchaseAmount > siteData.settings.discountThreshold7) {
+                discountPercent = 7;
+                discount = baseCost * 0.07;
+                discountText.textContent = `تخفیف اعمال شده: ${discountPercent}%`;
+            }
+            
+            if (discount > 0) {
+                discountDiv.style.display = 'block';
+            } else {
+                discountDiv.style.display = 'none';
+            }
+            
+            const finalCost = baseCost - discount;
+            
+            // Display result
+            costElement.textContent = finalCost.toFixed(0).toLocaleString();
+            resultDiv.style.display = 'block';
+            
+            // Update statistics
+            siteData.statistics.purchaseCalculations++;
+            siteData.statistics.visitDetails.push({
+                date: new Date().toLocaleString('fa-IR'),
+                action: 'purchase_calculation',
+                amount: purchaseAmount,
+                cost: finalCost,
+                discount: discountPercent
+            });
+            saveToStorage();
+        });
+
+        // Direct purchase button (Instagram)
+        document.getElementById('direct-purchase').addEventListener('click', function() {
+            alert('برای تکمیل خرید، لطفاً به پیج @hack_wallets در اینستاگرام مراجعه کنید.');
+            window.open('https://instagram.com/hack_wallets', '_blank');
+            
+            // Update statistics
+            siteData.statistics.instagramClicks++;
+            saveToStorage();
+        });
+
+        // Purchase package buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('purchase-btn') || e.target.closest('.purchase-btn')) {
+                const button = e.target.classList.contains('purchase-btn') ? e.target : e.target.closest('.purchase-btn');
+                const index = button.getAttribute('data-index');
+                const pkg = siteData.pricePackages[index];
+                
+                alert(`پکیج ${pkg.name} (${pkg.amount.toLocaleString()} دلاری) انتخاب شد. برای تکمیل خرید به پیج @hack_wallets در اینستاگرام مراجعه کنید.`);
+                window.open('https://instagram.com/hack_wallets', '_blank');
+                
+                // Update statistics
+                siteData.statistics.packageClicks++;
+                siteData.statistics.instagramClicks++;
+                saveToStorage();
+            }
+        });
+
+        // Admin Login
+        document.getElementById('login-admin').addEventListener('click', function() {
+            const password = document.getElementById('admin-password').value;
+            const adminPanel = document.getElementById('admin-panel');
+            
+            if (password === siteData.adminPassword) {
+                adminPanel.style.display = 'block';
+                document.getElementById('admin-password').value = '';
+                alert('ورود موفقیت‌آمیز بود. خوش آمدید!');
+            } else {
+                alert('رمز مدیریت اشتباه است!');
+            }
+        });
+
+        // Admin Controls - Site Status
+        document.getElementById('disable-site').addEventListener('click', function() {
+            siteData.siteActive = false;
+            document.getElementById('site-status').innerHTML = 
+                '<i class="fas fa-circle" style="color: #f44336;"></i> سایت در حال حاضر غیرفعال است.';
+            document.getElementById('site-status').style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+            alert('سایت غیرفعال شد! کاربران دیگر نمی‌توانند از سایت استفاده کنند.');
+            saveToStorage();
+        });
+        
+        document.getElementById('enable-site').addEventListener('click', function() {
+            siteData.siteActive = true;
+            document.getElementById('site-status').innerHTML = 
+                '<i class="fas fa-circle" style="color: #4CAF50;"></i> سایت در حال حاضر فعال است.';
+            document.getElementById('site-status').style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+            alert('سایت فعال شد!');
+            saveToStorage();
+        });
+
+        // Modal controls
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal');
+                document.getElementById(modalId).style.display = 'none';
+            });
+        });
+
+        // Edit Prices
+        document.getElementById('edit-prices').addEventListener('click', function() {
+            const modal = document.getElementById('editPricesModal');
+            document.getElementById('edit-price-percent').value = siteData.settings.pricePercent;
+            document.getElementById('edit-recovery-percent').value = siteData.settings.recoveryPercent;
+            document.getElementById('edit-min-purchase').value = siteData.settings.minPurchase;
+            document.getElementById('edit-min-recovery').value = siteData.settings.minRecovery;
+            modal.style.display = 'flex';
+        });
+
+        document.getElementById('save-prices').addEventListener('click', function() {
+            siteData.settings.pricePercent = parseFloat(document.getElementById('edit-price-percent').value);
+            siteData.settings.recoveryPercent = parseFloat(document.getElementById('edit-recovery-percent').value);
+            siteData.settings.minPurchase = parseInt(document.getElementById('edit-min-purchase').value);
+            siteData.settings.minRecovery = parseInt(document.getElementById('edit-min-recovery').value);
+            
+            updateUIFromData();
+            saveToStorage();
+            document.getElementById('editPricesModal').style.display = 'none';
+            alert('تنظیمات قیمت‌ها با موفقیت ذخیره شد.');
+        });
+
+        // Edit Descriptions
+        document.getElementById('edit-descriptions').addEventListener('click', function() {
+            const modal = document.getElementById('editDescriptionsModal');
+            document.getElementById('edit-recovery-desc').value = siteData.descriptions.recovery;
+            document.getElementById('edit-purchase-desc').value = siteData.descriptions.purchase;
+            document.getElementById('edit-recovery-tips').value = siteData.descriptions.recoveryTips.join('\n');
+            document.getElementById('edit-recovery-note').value = siteData.descriptions.recoveryNote;
+            document.getElementById('edit-purchase-note').value = siteData.descriptions.purchaseNote;
+            modal.style.display = 'flex';
+        });
+
+        document.getElementById('save-descriptions').addEventListener('click', function() {
+            siteData.descriptions.recovery = document.getElementById('edit-recovery-desc').value;
+            siteData.descriptions.purchase = document.getElementById('edit-purchase-desc').value;
+            siteData.descriptions.recoveryTips = document.getElementById('edit-recovery-tips').value.split('\n');
+            siteData.descriptions.recoveryNote = document.getElementById('edit-recovery-note').value;
+            siteData.descriptions.purchaseNote = document.getElementById('edit-purchase-note').value;
+            
+            updateUIFromData();
+            saveToStorage();
+            document.getElementById('editDescriptionsModal').style.display = 'none';
+            alert('توضیحات با موفقیت ذخیره شد.');
+        });
+
+        // Edit Discounts
+        document.getElementById('edit-discounts').addEventListener('click', function() {
+            const modal = document.getElementById('editDiscountsModal');
+            document.getElementById('edit-discount-7').value = siteData.settings.discountThreshold7;
+            document.getElementById('edit-discount-10').value = siteData.settings.discountThreshold10;
+            document.getElementById('edit-recovery-discount').value = siteData.settings.recoveryDiscountThreshold;
+            document.getElementById('edit-recovery-discount-percent').value = siteData.settings.recoveryDiscountPercent;
+            modal.style.display = 'flex';
+        });
+
+        document.getElementById('save-discounts').addEventListener('click', function() {
+            siteData.settings.discountThreshold7 = parseInt(document.getElementById('edit-discount-7').value);
+            siteData.settings.discountThreshold10 = parseInt(document.getElementById('edit-discount-10').value);
+            siteData.settings.recoveryDiscountThreshold = parseInt(document.getElementById('edit-recovery-discount').value);
+            siteData.settings.recoveryDiscountPercent = parseFloat(document.getElementById('edit-recovery-discount-percent').value);
+            
+            saveToStorage();
+            document.getElementById('editDiscountsModal').style.display = 'none';
+            alert('تنظیمات تخفیف‌ها با موفقیت ذخیره شد.');
+        });
+
+        // Edit Packages
+        document.getElementById('edit-packages').addEventListener('click', function() {
+            const modal = document.getElementById('editPackagesModal');
+            const container = document.getElementById('packages-container');
+            container.innerHTML = '';
+            
+            siteData.pricePackages.forEach((pkg, index) => {
+                const packageHtml = `
+                    <div class="package-edit" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px;">پکیج ${index + 1}</h4>
+                        <div class="input-group">
+                            <label>نام پکیج</label>
+                            <input type="text" class="package-name" data-index="${index}" value="${pkg.name}">
+                        </div>
+                        <div class="input-group">
+                            <label>مقدار موجودی (دلار)</label>
+                            <input type="number" class="package-amount" data-index="${index}" value="${pkg.amount}" min="100" step="100">
+                        </div>
+                        <div class="input-group">
+                            <label>قیمت (دلار)</label>
+                            <input type="number" class="package-price" data-index="${index}" value="${pkg.price}" min="1" step="1">
+                        </div>
+                        <button class="btn btn-secondary remove-package" data-index="${index}" style="width: auto; padding: 8px 15px; margin-top: 10px;">
+                            <i class="fas fa-trash"></i> حذف این پکیج
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += packageHtml;
+            });
+            
+            modal.style.display = 'flex';
+        });
+
+        document.getElementById('add-package').addEventListener('click', function() {
+            const newIndex = siteData.pricePackages.length;
+            siteData.pricePackages.push({
+                name: `پکیج جدید ${newIndex + 1}`,
+                amount: 1000,
+                price: 100
+            });
+            
+            // Reopen modal with updated packages
+            document.getElementById('edit-packages').click();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-package') || e.target.closest('.remove-package')) {
+                const button = e.target.classList.contains('remove-package') ? e.target : e.target.closest('.remove-package');
+                const index = parseInt(button.getAttribute('data-index'));
+                
+                if (siteData.pricePackages.length > 1) {
+                    siteData.pricePackages.splice(index, 1);
+                    // Reopen modal with updated packages
+                    document.getElementById('edit-packages').click();
+                } else {
+                    alert('حداقل باید یک پکیج وجود داشته باشد.');
+                }
+            }
+        });
+
+        document.getElementById('save-packages').addEventListener('click', function() {
+            // Collect data from inputs
+            const packages = [];
+            const nameInputs = document.querySelectorAll('.package-name');
+            const amountInputs = document.querySelectorAll('.package-amount');
+            const priceInputs = document.querySelectorAll('.package-price');
+            
+            for (let i = 0; i < nameInputs.length; i++) {
+                packages.push({
+                    name: nameInputs[i].value,
+                    amount: parseInt(amountInputs[i].value),
+                    price: parseInt(priceInputs[i].value)
+                });
+            }
+            
+            siteData.pricePackages = packages;
+            updateUIFromData();
+            saveToStorage();
+            document.getElementById('editPackagesModal').style.display = 'none';
+            alert('پکیج‌ها با موفقیت ذخیره شدند.');
+        });
+
+        // View Statistics
+        document.getElementById('view-stats').addEventListener('click', function() {
+            const modal = document.getElementById('statsModal');
+            
+            // Update stats display
+            document.getElementById('total-visits').textContent = siteData.statistics.totalVisits.toLocaleString();
+            document.getElementById('today-visits').textContent = siteData.statistics.todayVisits.toLocaleString();
+            document.getElementById('recovery-calculations').textContent = siteData.statistics.recoveryCalculations.toLocaleString();
+            document.getElementById('purchase-calculations').textContent = siteData.statistics.purchaseCalculations.toLocaleString();
+            document.getElementById('package-clicks').textContent = siteData.statistics.packageClicks.toLocaleString();
+            document.getElementById('instagram-clicks').textContent = siteData.statistics.instagramClicks.toLocaleString();
+            
+            // Update visits details
+            const detailsContainer = document.getElementById('visits-details');
+            detailsContainer.innerHTML = '';
+            
+            const recentVisits = siteData.statistics.visitDetails.slice(-20).reverse();
+            recentVisits.forEach(visit => {
+                const div = document.createElement('div');
+                div.style.padding = '8px';
+                div.style.borderBottom = '1px solid #eee';
+                div.style.fontSize = '12px';
+                
+                let text = `<strong>${visit.date}</strong> - `;
+                if (visit.page) text += `صفحه: ${visit.page}`;
+                if (visit.action) text += ` - عملیات: ${visit.action}`;
+                if (visit.amount) text += ` - مقدار: ${visit.amount}`;
+                if (visit.cost) text += ` - هزینه: ${visit.cost}`;
+                
+                div.innerHTML = text;
+                detailsContainer.appendChild(div);
+            });
+            
+            modal.style.display = 'flex';
+        });
+
+        // Reset Statistics
+        document.getElementById('reset-stats').addEventListener('click', function() {
+            if (confirm('آیا از بازنشانی آمار سایت اطمینان دارید؟ این عمل قابل بازگشت نیست.')) {
+                siteData.statistics = {
+                    totalVisits: 0,
+                    todayVisits: 0,
+                    recoveryCalculations: 0,
+                    purchaseCalculations: 0,
+                    packageClicks: 0,
+                    instagramClicks: 0,
+                    visitDetails: []
+                };
+                saveToStorage();
+                updateUIFromData();
+                alert('آمار سایت بازنشانی شد!');
+            }
+        });
+
+        // Export Statistics
+        document.getElementById('export-stats').addEventListener('click', function() {
+            alert('در حال حاضر خروجی اکسل در مرورگر امکان‌پذیر نیست. می‌توانید از اطلاعات نمایش داده شده در بخش "مشاهده آمار بازدید" کپی بگیرید.');
+        });
+
+        document.getElementById('export-stats-btn').addEventListener('click', function() {
+            // Create a downloadable text file
+            const dataStr = JSON.stringify(siteData.statistics, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `wallet-stats-${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        });
+
+        // Change Password
+        document.getElementById('change-password').addEventListener('click', function() {
+            const currentPass = prompt('لطفا رمز فعلی را وارد کنید:');
+            if (currentPass === siteData.adminPassword) {
+                const newPass = prompt('رمز جدید را وارد کنید:');
+                const confirmPass = prompt('تکرار رمز جدید:');
+                
+                if (newPass === confirmPass) {
+                    siteData.adminPassword = newPass;
+                    saveToStorage();
+                    alert('رمز با موفقیت تغییر یافت.');
+                } else {
+                    alert('رمزهای وارد شده مطابقت ندارند.');
+                }
+            } else {
+                alert('رمز فعلی اشتباه است.');
+            }
+        });
+
+        // Backup Data
+        document.getElementById('backup-data').addEventListener('click', function() {
+            const dataStr = JSON.stringify(siteData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `wallet-backup-${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('پشتیبان‌گیری انجام شد. فایل با موفقیت دانلود شد.');
+        });
+
+        // Restore Data
+        document.getElementById('restore-data').addEventListener('click', function() {
+            if (confirm('آیا از بازیابی اطلاعات از فایل پشتیبان اطمینان دارید؟ داده‌های فعلی جایگزین خواهند شد.')) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        try {
+                            const restoredData = JSON.parse(event.target.result);
+                            siteData = restoredData;
+                            saveToStorage();
+                            updateUIFromData();
+                            alert('اطلاعات با موفقیت بازیابی شدند.');
+                        } catch (error) {
+                            alert('خطا در خواندن فایل. لطفا مطمئن شوید فایل معتبر است.');
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            }
+        });
+
+        // Edit Calculator Settings
+        document.getElementById('edit-calculator').addEventListener('click', function() {
+            alert('تنظیمات ماشین حساب از طریق بخش‌های "ویرایش قیمت‌ها" و "ویرایش تخفیف‌ها" قابل تغییر است.');
+        });
+
+        // Edit Notes
+        document.getElementById('edit-notes').addEventListener('click', function() {
+            document.getElementById('edit-descriptions').click();
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Initialize the site
+        window.addEventListener('load', function() {
+            initFromStorage();
+            
+            // Check if site is active
+            if (!siteData.siteActive) {
+                document.getElementById('site-status').innerHTML = 
+                    '<i class="fas fa-circle" style="color: #f44336;"></i> سایت در حال حاضر غیرفعال است.';
+                document.getElementById('site-status').style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+                
+                // Show warning to users
+                setTimeout(() => {
+                    if (!siteData.siteActive && window.location.hash !== '#admin-login') {
+                        alert('سایت در حال حاضر غیرفعال است. لطفا با مدیر سایت تماس بگیرید.');
+                    }
+                }, 1000);
+            }
+        });
+    </script>
 </body>
-</html>
+  </html>
